@@ -1,0 +1,152 @@
+﻿<Window x:Class="TemaDame.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TemaDame.ViewModels"
+        mc:Ignorable="d"
+        Title="Checkers" Height="1000" Width="1600">
+    <Window.DataContext>
+        <local:GameVM />
+    </Window.DataContext>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#353535"/>
+            <Setter Property="Foreground" Value="#f2f2f2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#ffa561"/>
+                    <Setter Property="Foreground" Value="#000000"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ButtonNoHighlight" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="background.jpg"/>
+        </Grid.Background>
+        <StackPanel>
+            <CheckBox FontFamily="Courier New" IsEnabled="{Binding GameInfo.StartPhase}" IsChecked="{Binding GameInfo.MultipleAllowed}" Margin="25, 250, 0, 0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <CheckBox.LayoutTransform>
+                    <ScaleTransform ScaleX="3" ScaleY="3.1" />
+                </CheckBox.LayoutTransform>
+                <CheckBox.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="7"/>
+                    </Style>
+                </CheckBox.Resources>
+            </CheckBox>
+            <Button Style="{StaticResource ButtonStyle}" Content="New Game" Width="220" Height="80" Command="{Binding NewGameCommand}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="35" FontFamily="Courier New" Margin="60, 30, 0, 0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="30"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Style="{StaticResource ButtonStyle}" Content="Save Game" Width="220" Height="80" Command="{Binding SaveGameCommand}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="35" FontFamily="Courier New" Margin="60, 30, 0, 0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="30"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Style="{StaticResource ButtonStyle}" Content="Load Game" Width="220" Height="80" Command="{Binding LoadGameCommand}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="35" FontFamily="Courier New" Margin="60, 30, 0, 0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="30"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+        <Button Style="{StaticResource ButtonStyle}" Content="About" Width="130" Height="50" Command="{Binding AboutCommand}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="28" FontFamily="Courier New" Margin="60, 35, 0, 0">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="22"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Button Style="{StaticResource ButtonStyle}" Content="{Binding Stats.ButtonStats}" Width="250" Height="60" Command="{Binding ShowStatsCommand}" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="35" FontFamily="Courier New" Margin="0, 245, 0, 30">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="20"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Image Width="60" Height="60" Source="White.png" Stretch="UniformToFill" Visibility="{Binding Stats.ShowStats, Converter={StaticResource BoolToVis}}" Margin="60, 0, 0, 35" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Image Width="60" Height="60" Source="Red.png" Stretch="UniformToFill" Visibility="{Binding Stats.ShowStats, Converter={StaticResource BoolToVis}}" Margin="0, 0, 60, 35" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        <Label Foreground="NavajoWhite" Content="{Binding Stats.WhiteWinsString}" Visibility="{Binding Stats.ShowStats, Converter={StaticResource BoolToVis}}" FontSize="40" FontFamily="Courier New" Margin="130, 0, 0 ,34" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Label Foreground="NavajoWhite" Content="{Binding Stats.RedWinsString}" Visibility="{Binding Stats.ShowStats, Converter={StaticResource BoolToVis}}" FontSize="40" FontFamily="Courier New" Margin="0, 0, 130 ,34" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+
+        <Label Foreground="NavajoWhite" Content="Multi-Jump" FontSize="30" FontFamily="Courier New" Margin="80, 253, 70 ,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label Foreground="NavajoWhite" Content="Player to move:" FontSize="40" FontFamily="Courier New" Margin="0, 30, 60 ,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <Image x:Name="MoveWhite" Width="50" Height="50" Source="White.png" Stretch="UniformToFill"  Margin="365, 35, 0 ,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <Image x:Name="MoveRed" Width="50" Height="50" Source="Red.png" Stretch="UniformToFill" Visibility="{Binding GameInfo.PlayerTurn, Converter={StaticResource BoolToVis}}" Margin="365, 35, 0 ,0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+        <Label Foreground="#FF93FFB3" Content="Wins" FontSize="60" FontFamily="Courier New" Margin="0, 200, 83 , 140" Visibility="{Binding GameInfo.GameFinished, Converter={StaticResource BoolToVis}}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <Image Width="120" Height="120" Source="White.png" Stretch="UniformToFill"  Margin="0, 0, 100 , 140" Visibility="{Binding GameInfo.WhiteWins, Converter={StaticResource BoolToVis}}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <Image Width="120" Height="120" Source="Red.png" Stretch="UniformToFill"  Margin="0, 0, 100 , 140" Visibility="{Binding GameInfo.RedWins, Converter={StaticResource BoolToVis}}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+        <ItemsControl Name="grid"  ItemsSource="{Binding GameBoard}" VerticalAlignment="Center" Width="720" Height="720">
+            <ItemsControl.Background>
+                <ImageBrush ImageSource="Board.png"/>
+            </ItemsControl.Background>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ItemsControl ItemsSource="{Binding}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#000000">
+                                    <Button Style="{StaticResource ButtonNoHighlight}" Background="Transparent" Width="90" Height="90" Command="{Binding ClickCommand}" CommandParameter="{Binding SimpleCell}">
+                                        <Grid>
+                                            <Image Source="{Binding SimpleCell.Piece}" Stretch="UniformToFill" />
+                                            <Image Source="Highlight.png" Stretch="UniformToFill" Visibility="{Binding SimpleCell.Highlight, Converter={StaticResource BoolToVis}}"/>
+                                        </Grid>
+                                    </Button>
+
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>
